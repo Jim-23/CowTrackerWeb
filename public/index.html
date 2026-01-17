@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Cow Tracking Web | fencee</title>
+	<meta name="description" content="Cow Tracking Web Application">
+	<meta property="og:site_name" content="fencee">
+	<link rel="stylesheet" href="css/style.css">
+	<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+	<link rel="icon" href="css/icons/cow-3.png" type="image/x-icon">
+	<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body>
+	<!-- Navigation Bar -->
+	<nav class="main-heading">
+		<div class="nav-left">
+			<img src="css/icons/fencee-logo-white.svg" alt="Website Logo" class="logo">
+		</div>
+		
+		<div class="nav-right">
+			<!-- <button id="collars-btn" class="btn-heading">Collars</button> -->
+			<button id="fences-btn" class="btn-heading">Fences</button>
+			<button id="herds-btn" class="btn-heading">Herds</button>
+			<button id="details-btn" class="btn-heading">Details</button>
+		</div>
+	</nav>
+	<!-- Main Content: Sidebar, Map Container, and Details Panel -->
+	<div class="main-container">
+			<!-- Sidebar for listing active collars -->
+			<div id="sidebar" class="sidebar-left">
+				<!-- Header containing the Active Collars heading and the add button -->
+				<div class="header">
+					<h2>ACTIVE COLLARS</h2>
+				</div>
+				<!-- Separator between the header and the list -->
+				<div id="cow-separator" class="separator"></div>
+				<!-- Sorting dropdown -->
+				<div id="sorting" class="sort">
+					<label id="sort-label" class="sort">Sort by: </label>
+					<select id="sort-select" class="sort">
+						<option value="empty">...</option>
+						<option value="name">Name</option>
+						<option value="id">ID</option>
+						<option value="alarm">Alarm</option>
+					</select>
+				</div>
+				<!-- Collar list -->
+				<ul id="collar-list">
+					<!-- Collar list items will be dynamically added here -->
+				</ul>
+			</div>
+		<!-- Map Container -->
+		<div id="map-container" class="map-container-class">
+			<div id="map"></div>
+			<button id="toggle-details-btn" class="toggle-btn"></button>
+		</div>
+
+		<!-- Panel for displaying cow details (initially hidden) -->
+
+		<div id="fences-panel" class="hidden">
+			<div id="sidebar" class="sidebar-right">
+				<div class="header-details">
+					<!-- Header containing the Cow Details heading and the toggle button -->
+					<h2>AVAILABLE FENCES</h2>
+				</div>
+				<div id="cow-separator" class="separator"></div>
+				<ul id="fence-list">
+					<!-- Fences list items will be dynamically added here -->
+				</ul>
+			</div>
+		</div>
+		<div id="herds-panel" class="hidden">
+			<div id="sidebar" class="sidebar-right">
+				<div class="header-details">
+					<!-- Header containing the Cow Details heading and the toggle button -->
+					<h2>HERDS</h2>
+				</div>
+				<div id="cow-separator" class="separator"></div>
+				<ul id="herd-list">
+					<!-- Herd list items will be dynamically added here -->
+				</ul>
+			</div>
+		</div>
+		<div id="cow-details" class="hidden">
+			<div id="sidebar" class="sidebar-right">
+				<div class="header-details">
+					<!-- Header containing the Cow Details heading and the toggle button -->
+					<h2>COW DETAILS</h2>
+					<button id="toggle-details-btn-panel" class="toggle-btn"></button>
+				</div>	
+				<div id="cow-separator" class="separator"></div>
+				<div id="cow-image-container" class="flex-container-2">
+					<div id="name-alarm-div">
+						<p id="cow-name"></p>
+						<p id="cow-alarm">No alarm</p>
+						<p id="cow-id">ID: --</p>
+					</div>
+					<p id="cow-battery">100 %</p>
+					<img id="cow-image"></img>
+				</div>
+				<div id="btn-card-div">
+					<p id="led-color"></p>
+					<button id="cow-card-button" class="btn-card">Card</button>
+				</div>
+				
+				<div id="cow-separator" class="separator"></div>
+				<div class="description">
+					<p id="cow-location">Lon/Lat: --, --</p>
+					<p id="cow-last-update">Last update: --</p>
+					<p id="cow-heart-rate">TPulser: --</p>
+					<p id="cow-age">Birth date: --</p>
+					<p id="cow-breed">Breed: --</p>
+				</div>
+				<div id="cow-buttons" class="flex-container-4">
+					<div class="dropdown">
+						<button id="cow-led-button" class="btn">LED</button>
+						<div id="led-menu" class="dropdown-content">
+							<button class="led-color-option" data-color="#00ff00">
+								<span class="color-dot" style="background-color: #00ff00;"></span> Green
+							</button>
+							<button class="led-color-option" data-color="#ff0000">
+								<span class="color-dot" style="background-color: #ff0000;"></span> Red
+							</button>
+							<button class="led-color-option" data-color="#0000ff">
+								<span class="color-dot" style="background-color: #0000ff;"></span> Blue
+							</button>
+							<button class="led-color-option" data-color="#ffff00">
+								<span class="color-dot" style="background-color: #ffff00;"></span> Yellow
+							</button>
+							<button class="led-color-option" data-color="#ff00ff">
+								<span class="color-dot" style="background-color: #ff00ff;"></span> Purple
+							</button>
+							<button class="led-option" data-color="#00ffff">
+								<span class="color-dot" style="background-color: #00ffff;"></span> Cyan
+							</button>
+							<button class="led-option" data-color="#000000">
+								<span class="color-dot" style="background-color: #000000;"></span> Off
+							</button>
+						</div>
+					</div>
+					<button id="cow-sound-button" class="btn">Sound</button>
+					<button id="cow-shock-button" class="btn">Shock</button>
+				</div>
+				<div id="cow-separator" class="separator"></div>
+				<div id="limit-points-container" class="limit-range-container">
+					<label for="limit_points">Limit:</label>
+					<input type="number" id="limit_points" name="limit_points" value="0">
+				</div>
+				<div id="page-container" class="limit-range-container">
+					<label for="page">Page:</label>
+					<input type="number" id="page" name="page" value="0">
+				</div>
+				<div id ="date-range-container" class="limit-range-container">
+					<label for="start-date">Start:</label>
+					<input type="date" id="start-date" name="start-date">
+				</div>
+				<div id="date-range-container-2" class="limit-range-container">
+					<label for="end-date">End:</label>
+					<input type="date" id="end-date" name="end-date">
+				</div>
+				<div id="show-location" class="limit-range-container">
+					<!-- Checkboxes vertically aligned -->
+					<div class="checkbox-container">
+						<input type="checkbox" id="point-map-checkbox">
+						<label for="point-map-checkbox">Location</label>
+					</div>
+					<div class="checkbox-container">
+						<input type="checkbox" id="heat-map-checkbox">
+						<label for="heat-map-checkbox">Heatmap</label>
+					</div>
+				</div>
+				<div id="button-container" class="limit-range-container">
+					<button id="show-locations-btn" class="btn-location">Show</button>
+					<button id="clear-locations-btn" class="btn-location">Clear</button>
+				</div>
+				<div id="range-info" class="range-info-container">
+					<p id="range-info-from"></p>
+					<p id="range-info-to"></p>
+				</div>
+				<div id="cow-separator" class="separator"></div>
+				<div class="description-2">
+					<p id="cow-bat">
+						<button id="batt-btn" class="icon-btn desc-icon" aria-label="Battery">Battery (V)</button>
+					</p>
+					<p id="cow-temp">
+						<button id="temp-btn" class="icon-btn desc-icon" aria-label="Temp 1">Temperature</button>
+					</p>
+					<p id="cow-speed">
+						<button id="speed-btn" class="icon-btn desc-icon" aria-label="Speed">Speed</button>
+					</p>
+					<p id="cow-accuracy">
+						<button id="accuracy-btn" class="icon-btn desc-icon" aria-label="Accuracy">Accuracy</button>
+					</p>
+					<p id="cow-altitude">
+						<button id="altitude-btn" class="icon-btn desc-icon" aria-label="Altitude">Altitude</button>
+					</p>
+					<p id="cow-activity">
+						<button id="activity-btn" class="icon-btn desc-icon" aria-label="Activity">Activity</button>
+					</p>
+					<p id="cow-rumination">
+						<button id="rumination-btn" class="icon-btn desc-icon" aria-label="Rumination">Rumination</button>
+					</p>
+					<p id="cow-press">
+						<button id="press-btn" class="icon-btn desc-icon" aria-label="Pressure">Pressure</button>
+					</p>
+				</div>
+
+				<div id="cow-separator" class="separator"></div>
+
+				<div id="cow-buttons" class="flex-container-4">
+					<button id="more-details-btn" class="btn-more">
+						More
+						<img id="more-icon" class="more-details-icon" src="css/icons/arrow-down.png" alt=""/>
+					</button>
+				</div>
+				<div id="more-details" class="hidden">
+
+					<div id="cow-separator" class="separator"></div>
+					<div class="description">
+						<p id="cow-id"></p>
+						<p id="cow-location"></p>
+						<p id="cow-last-update"></p>
+						<p id="cow-age"></p>
+						<p id="cow-breed"></p>
+						<p id="cow-heart-rate"></p>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div id="graph-modal" class="hidden">
+		<div class="modal-content">
+			<div class="header-part-graph">
+				<h2>GRAPHS</h2>
+				<button id="close-graph-modal" class="close"></button>
+			</div>
+			<div id="cow-separator" class="separator2"></div>
+			<div id="tabs-graph">
+				<p id="cow-batt-modal">
+					<button id="batt-btn-modal" class="icon-btn-text desc-icon" aria-label="Battery">Battery (V)</button>
+				</p>
+				<p id="cow-temp-modal">
+					<button id="temp-btn-modal" class="icon-btn-text desc-icon" aria-label="Temperature">Temperature</button>
+				</p>
+				<p id="cow-speed-modal">
+					<button id="speed-btn-modal" class="icon-btn-text desc-icon" aria-label="Speed">Speed</button>
+				</p>
+				<p id="cow-accuracy-modal">
+					<button id="accuracy-btn-modal" class="icon-btn-text desc-icon" aria-label="Accuracy">Accuracy</button>
+				</p>
+				<p id="cow-altitude-modal">
+					<button id="altitude-btn-modal" class="icon-btn-text desc-icon" aria-label="Altitude">Altitude</button>
+				</p>
+				<p id="cow-activity-modal">
+					<button id="activity-btn-modal" class="icon-btn-text desc-icon" aria-label="Activity">Activity</button>
+				</p>
+				<p id="cow-rumination-modal">
+					<button id="rumination-btn-modal" class="icon-btn-text desc-icon" aria-label="Rumination">Rumination</button>
+				</p>  
+				<p id="cow-press-modal">
+					<button id="press-btn-modal" class="icon-btn-text desc-icon" aria-label="Pressure">Pressure</button>
+				</p>
+			</div>
+			<div id="graph-container">
+				<canvas id="chartCanvas"></canvas>
+			</div>
+		</div>
+	</div>
+
+	<div id="cow-card-modal" class="hidden">
+		<div class="modal-content">
+			<div class="header-part">
+				<h2>COW CARD</h2>
+				<div id="cow-card-menu-btns">
+					<button id="save-button" class="btn-save">Save</button>
+					<span id="close-card-modal" class="close"></span>
+				</div>
+			</div>
+			<div id="cow-separator" class="separator"></div>
+			<!-- Navigation buttons to switch between sections -->
+			<div id="tabs">
+				<button id="medical-data-tab">Medical Data</button>
+				<button id="cow-info-card-tab">Cow Info</button>
+				<button id="doc-upload-tab">Documents</button>
+			</div>
+	
+			<!-- Main Cow Card Section -->
+			<div id="medical-data-part" class="tab-content">
+				<!-- Header with Cow Name and ID -->
+				<div id="medical-header">
+					<div id="cow-name-id-med">
+						<div class="info-window">
+							<label for="cow-name-med">Cow Name:</label>
+							<input type="text" id="cow-name-med" readonly>
+						</div>
+						<div class="info-window">
+							<label for="cow-id-med">Cow ID:</label>
+							<input type="text" id="cow-id-med" readonly>
+						</div>
+					</div>
+				</div>
+			
+				<!-- Textarea for Medical Notes -->
+				<div id="medical-note-div">
+					<textarea id="medical-note" readonly></textarea>
+				</div>
+			
+				<div id="input-part">
+					<!-- Form for Date and Procedure Inputs -->
+					<div id="procedure-form">
+						<label for="procedure-date">Date:</label>
+						<input type="date" id="procedure-date">
+				
+						<label for="procedure-text">Procedure:</label>
+						<input type="text" id="procedure-text" placeholder="Enter procedure">
+						
+						<button id="add-procedure">SUBMIT</button>
+					</div>
+					<div id="procedure-note-div">
+						<label for="procedure-note">Note:</label>
+						<textarea id="procedure-note"></textarea>
+					</div>
+					
+					<div id="procedure-doc-div">
+						<label for="pdf-upload">Upload PDF:</label>
+						<input type="file" id="pdf-upload" accept="application/pdf">
+						<button id="upload-button">Upload</button>
+					</div>
+
+				</div>
+			</div>
+
+			<div id="cow-info-card-part" class="tab-content active">
+				<div id="cow-info">
+					<form id="cow-details-form">
+						<div class="form-column">
+							<h2>General Data</h2>
+							<div id="cow-separator" class="separator"></div>
+							<div class="form-group">
+								<label for="cowId">Cow ID:</label>
+								<input type="text" id="cowId" name="cowId">
+							</div>
+							<div class="form-group">
+								<label for="registrationNumber">Registration Number:</label>
+								<input type="text" id="registrationNumber" name="registrationNumber">
+							</div>
+							<div class="form-group">
+								<label for="group">Grp.:</label>
+								<input type="text" id="group" name="group">
+							</div>
+							<div class="form-group">
+								<label for="herd">Herd:</label>
+								<input type="text" id="herd" name="herd">
+							</div>
+							<div class="form-group">
+								<label for="passiveTag">Passive Tag:</label>
+								<input type="text" id="passiveTag" name="passiveTag">
+							</div>
+							<div class="form-group">
+								<label for="ageYears">Age (Years):</label>
+								<input type="text" id="ageYears" name="ageYears">
+							</div>
+							<div class="form-group">
+								<label for="breed">Breed:</label>
+								<input type="text" id="breed" name="breed">
+							</div>
+							<div class="form-group">
+								<label for="oldId">Old ID:</label>
+								<input type="text" id="oldId" name="oldId">
+							</div>
+							<div class="form-group">
+								<label for="lastBcs">Last BCS:</label>
+								<input type="text" id="lastBcs" name="lastBcs">
+							</div>
+							<div class="form-group">
+								<label for="deadQuarter">Dead Quarter:</label>
+								<input type="text" id="deadQuarter" name="deadQuarter">
+							</div>
+
+							<div class="form-group">
+								<label for="name">Name:</label>
+								<input type="text" id="name" name="name">
+							</div>
+							<div class="form-group">
+								<label for="herdBookNum">Herd Book Number:</label>
+								<input type="text" id="herdBookNum" name="herdBookNum">
+							</div>
+							<div class="form-group">
+								<label for="groupName">Group Name:</label>
+								<input type="text" id="groupName" name="groupName">
+							</div>
+							<div class="form-group">
+								<label for="tag">Tag:</label>
+								<input type="text" id="tag" name="tag">
+							</div>
+							<div class="form-group">
+								<label for="birthDate">Birth Date:</label>
+								<input type="date" id="birthDate" name="birthDate">
+							</div>
+							<div class="form-group">
+								<label for="sex">Sex:</label>
+								<input type="text" id="sex" name="sex">
+							</div>
+							<div class="form-group">
+								<label for="colour">Colour:</label>
+								<input type="text" id="colour" name="colour">
+							</div>
+							<div class="form-group">
+								<label for="origin">Origin:</label>
+								<input type="text" id="origin" name="origin">
+							</div>
+							<div class="form-group">
+								<label for="avgWeight">Average Weight (kg):</label>
+								<input type="text" id="avgWeight" name="avgWeight">
+							</div>
+						</div>
+					</form>
+
+					<form id="cow-details-form">
+						<div class="form-column">
+							<h2>Fertility Data</h2>
+							<div id="cow-separator" class="separator"></div>
+							<div class="form-group">
+								<label for="gyn-status">Gyn. Status:</label>
+								<input type="text" id="gyn-status" name="gyn-status">
+							</div>
+							<div class="form-group">
+								<label for="calving-date">Calving Date:</label>
+								<input type="date" id="calving-date" name="calving-date">
+							</div>
+							<div class="form-group">
+								<label for="calving-exp-date">Calving Expected Date:</label>
+								<input type="date" id="calving-exp-date" name="calving-exp-date">
+							</div>
+							<div class="form-group">
+								<label for="insem-date">Insemination Date:</label>
+								<input type="date" id="insem-date" name="insem-date">
+							</div>
+							<div class="form-group">
+								<label for="bull-name">Bull Name:</label>
+								<input type="text" id="bull-name" name="bull-name">
+							</div>
+							<div class="form-group">
+								<label for="days-preg">Days Pregnant:</label>
+								<input type="number" id="days-preg" name="days-preg">
+							</div>
+							<div class="form-group">
+								<label for="dry-off-exp-date">Dry Off Exp. Date:</label>
+								<input type="date" id="dry-off-exp-date" name="dry-off-exp-date">
+							</div>
+							<div class="form-group">
+								<label for="lact-no">Lact. No:</label>
+								<input type="number" id="lact-no" name="lact-no">
+							</div>
+							<div class="form-group">
+								<label for="dim">DIM:</label>
+								<input type="number" id="dim" name="dim">
+							</div>
+							<div class="form-group">
+								<label for="days-to-calving">Days to Calving:</label>
+								<input type="number" id="days-to-calving" name="days-to-calving">
+							</div>
+							<div class="form-group">
+								<label for="insem-no">Ins. No:</label>
+								<input type="number" id="insem-no" name="insem-no">
+							</div>
+							<div class="form-group">
+								<label for="after-insem">After Insem:</label>
+								<input type="number" id="after-insem" name="after-insem">
+							</div>
+							<div class="form-group">
+								<label for="dry-days">Dry Days:</label>
+								<input type="number" id="dry-days" name="dry-days">
+							</div>
+							<div class="form-group">
+								<label for="days-to-dry-off">Days to Dry Off:</label>
+								<input type="number" id="days-to-dry-off" name="days-to-dry-off">
+							</div>
+						</div>
+					</form>
+				</div>
+			</div>
+			<!-- Document Upload Section -->
+			<div id="doc-upload-part" class="tab-content">
+				<div id="doc-upload-container">
+					<!-- Document upload form -->
+					<form id="pdf-upload-form" enctype="multipart/form-data">
+						
+						<!-- For now fake pdfs here-->
+						<div id="pdf-list">
+							<div class="pdf-items-header">
+								<label id="label-header">Name</label>
+								<label id="label-header">Date modified</label>
+								<label id="label-header">Type</label>
+								<label id="label-header">Size</label>
+							</div>
+							<div id="cow-separator" class="separator"></div>
+							<div class="pdf-items">
+								<img src="css/icons/pdf-icon.png" alt="PDF icon" class="pdf-icon">
+								<label id="label">Insemination</label>
+								<label id="label">04/09/2024</label>
+								<label id="label">PDF</label>
+								<label id="label">1.1 MB</label>
+								<button class="pdf-delete-btn "></button>
+							</div>
+							<div class="pdf-items">
+								<img src="css/icons/pdf-icon.png" alt="PDF icon" class="pdf-icon">
+								<label id="label">Regular checkup</label>
+								<label id="label">20/10/2024</label>
+								<label id="label">PDF</label>
+								<label id="label">1.6 MB</label>
+								<button class="pdf-delete-btn "></button>
+							</div>
+							<div class="pdf-items">
+								<img src="css/icons/pdf-icon.png" alt="PDF icon" class="pdf-icon">
+								<label id="label">Lab results</label>
+								<label id="label">26/10/2024</label>
+								<label id="label">PDF</label>
+								<label id="label">0.9 MB</label>
+								<button class="pdf-delete-btn "></button>
+							</div>
+
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<script src="js/script.mjs"></script>
+	<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+	<script src="https://unpkg.com/leaflet.heat/dist/leaflet-heat.js"></script>
+</body>
+
+</html>

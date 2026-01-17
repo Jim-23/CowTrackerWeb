@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   id="Vrstva_1"
+   viewBox="0 0 377 429"
+   version="1.1"
+   sodipodi:docname="gps-black.svg"
+   inkscape:version="1.4 (86a8ad7, 2024-10-11)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview1"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:zoom="1.8811189"
+     inkscape:cx="188.45167"
+     inkscape:cy="214.5"
+     inkscape:window-width="1920"
+     inkscape:window-height="1009"
+     inkscape:window-x="-8"
+     inkscape:window-y="-8"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="Vrstva_1" />
+  <defs
+     id="defs1">
+    <style
+       id="style1">.cls-1{fill:none;}.cls-1,.cls-2{stroke-width:0px;}.cls-2{fill:#27abe3;}.cls-3{clip-path:url(#clippath);}</style>
+    <clipPath
+       id="clippath">
+      <rect
+         class="cls-1"
+         x="40.74"
+         y="40.33"
+         width="289.26"
+         height="353.73"
+         id="rect1" />
+    </clipPath>
+  </defs>
+  <g
+     class="cls-3"
+     clip-path="url(#clippath)"
+     id="g1"
+     style="fill:#d4aa00">
+    <path
+       class="cls-2"
+       d="m329.96,185.44c-.2,29.12-8.57,56.01-22.26,81.4-21.54,39.98-51.83,72.58-86.28,101.55-9.72,8.18-20.03,15.67-30.21,23.3-4.26,3.2-7.77,3.11-12.09.03-41.69-29.72-78.4-64.42-106.39-107.68-14.87-22.98-26.44-47.55-30.21-74.93-8.31-60.45,12.23-109.5,62.38-143.78,82.56-56.44,195.68-12.59,220.37,84.47,2.94,11.57,5.04,35.6,4.69,35.65"
+       id="path1"
+       style="fill:#000000;fill-opacity:1" />
+  </g>
+</svg>

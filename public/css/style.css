@@ -1,0 +1,1703 @@
+/* Basic styling */
+@import url('https://fonts.googleapis.com/css2?family=Dosis:wght@700&display=swap');
+
+:root {
+	--primary-color: #1FADE4;
+	--item-bg: #f8f9fa;
+	--item-hover-bg: #e9ecef;
+	--border-color: #dee2e6;
+	--text-color: #212529;
+	--text-secondary: #6c757d;
+}
+
+body,
+html {
+	margin: 0;
+	padding: 0;
+	font-family: 'Manrope', sans-serif;
+}
+
+.main-heading {
+	display: flex;
+	justify-content: space-between;
+	background-color: #eeeff0;
+	/* ADD AUTO RESIZING */
+	width: 100%;
+}
+
+.nav-left {
+	align-items: left;
+	margin-left: 0px;
+	background-color: #1FADE4;
+	padding-top: 5px;
+	padding-bottom: 5px;
+}
+
+.nav-right {
+	align-items: right;
+	margin: 10px;
+	margin-top: 30px;
+}
+
+.main-heading .logo {
+	height: 80px;
+	width: 300px;
+	transition: all 0.3s ease;
+}
+
+/* hidden toggle button when class hidden is added */
+.gateway-class {
+	background-color: #1FADE4;
+	color: white;
+	border: none;
+	padding: 5px 10px;
+	font-size: 1.2em;
+	border-radius: 4px;
+	margin-top: 10px;
+}
+
+/* Add this CSS to your stylesheet */
+.leaflet-popup-content {
+	font-size: 12px;
+	/* Smaller font */
+	padding: 5px;
+	/* Less padding */
+}
+
+.leaflet-popup-content-wrapper {
+	padding: 5px !important;
+	/* Less padding around the content */
+}
+
+.leaflet-popup-tip {
+	width: 6px;
+	height: 6px;
+}
+
+.toggle-container {
+	display: flex;
+	/* Enables flexbox layout */
+	justify-content: flex-start;
+	/* Aligns buttons to the left (or change to 'space-between' if you want them spread apart) */
+	align-items: center;
+	/* Vertically centers the buttons */
+	gap: 10px;
+	z-index: 1000	
+	/* Adds space between the buttons */
+}
+
+.toggle-container #toggle-left {
+	margin-left: 20px;
+	margin-bottom: 40px;
+	margin-top: 10px;
+}
+
+.toggle-container #toggle-right {
+	margin-left: 100px;
+	margin-bottom: 40px;
+	margin-top: 10px;
+}
+
+/* Main container for sidebar, map, and details */
+.main-container {
+	display: flex;
+	height: 89vh;
+	overflow: hidden;
+	
+}
+
+/* Map container styling */
+.map-container-class {
+	flex-grow: 1;
+	/* Takes up the remaining space next to the sidebar */
+	position: relative; /* Allows absolute positioning of the toggle button */
+	overflow: hidden; /* Prevents scrolling */
+	
+	/* Prevents scrolling */
+}
+/* When details are hidden, map takes full width */
+
+#map {
+	background-color: #b4e7fa;
+	width: 100%;
+	height: 100%;
+	/* make the map take up the full width and height of the container */
+
+
+}
+
+#toggle-details-btn,
+#toggle-details-btn-panel {
+	background-color: #f1f1f1;
+	
+	color: white;
+	border: none;
+	border-radius: 4px;
+	margin: 5px;
+	cursor: pointer;
+	width: 35px;
+	height: 35px;
+	font-size: 1.3em;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	
+}
+
+#toggle-details-btn {
+	position: absolute;
+	right: 0px;
+	top: 3px;
+	background-image: url('icons/left-arrow.png');
+	background-repeat: no-repeat;
+	background-size: 70%;
+	background-position: center;
+
+	/* Hide the button initially */
+}
+#toggle-details-btn-panel {
+	left: 10px;
+	top: 3px;
+	background-image: url('icons/right-arrow.png');
+	background-repeat: no-repeat;
+	background-size: 70%;
+	background-position: center;
+	/* Hide the button initially */
+}
+
+#toggle-details-btn:hover,
+#toggle-details-btn-panel:hover {
+	background-color: #ccc;
+	color: #555;
+}
+
+/* Toggle buttons */
+.toggle-btn {
+	font-size: 1.1em;
+	border: none;
+	border-width: 2px;
+	border-style: solid;
+	border-radius: 10pt;
+	padding: 10px;
+	cursor: pointer;
+	box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+	z-index: 1000;
+	/* Ensure the buttons are above other elements */
+}
+
+/* Hide the details panel initially */
+.hidden {
+	display: none;
+	z-index: -10;
+}
+
+.hidden-btn {
+	display: none;
+	z-index: -10;
+}
+
+.btn-location {
+	background-color: #f1f1f1;
+	color: #555;
+	border: none;
+	font-size: 1.2em;
+	border-radius: 4px;
+	cursor: pointer;
+	transition: background-color 0.3s ease;
+	margin-right: 10px;
+	height: 30px;
+	width: 150px;
+}
+
+.btn-location:hover {
+	background-color: #f1f1f1;
+	color: #1FADE4;
+	box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+	
+}
+
+.sidebar-left {
+	width: 300px;
+	background-color: white;
+	box-shadow: 2px 0px 5px rgba(0, 0, 0, 0.2);
+	overflow-y: auto;
+	/* Sidebar takes the full height of the viewport */
+	z-index: 1000;
+	position: relative;
+}
+
+.sidebar-right {
+	width: 300px;
+	height: 100%;
+	background-color: white;
+	box-shadow: -2px 0px 5px rgba(0, 0, 0, 0.2);
+	overflow-y: auto;
+
+}
+
+.sidebar-right .hidden {
+	display: none;
+}
+
+.header {
+	align-items: center;
+	justify-content: center;
+	display: flex;
+}
+
+.header-details {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+}
+
+.header-details h2 {
+	/* Removes extra margin around the h2 */
+	color: #555;
+	font-size: 1.5em;
+	font-family: 'Manrope', sans-serif;
+	font-weight: bold;
+	margin: 10px;
+}
+
+.header h2 {
+	/* Removes extra margin around the h2 */
+	color: #555;
+	font-size: 1.5em;
+	font-family: 'Manrope', sans-serif;
+	font-weight: bold;
+	margin: 10px;
+	
+}
+
+.sort{
+	font-size: 1.1em;
+	color: #555;
+	margin-left: 10px;
+	margin-right: 10px;
+	display: flex;
+	justify-content: space-between;
+}
+
+#sort-label {
+	font-size: 1.1em;
+	color: #555;
+	margin-top: 5px;
+	display: flex;
+	justify-content: space-between;
+}
+
+#sort-select {
+	font-size: 1em;
+	padding: 5px;
+	border-radius: 4px;
+	border: 1px solid #ccc;
+	cursor: pointer;
+	background-color: #fff;
+	color: #555;
+	width: 150px;
+	justify-content: flex-end;
+}
+
+/* Hide the sidebar initially */
+.hidden-sidebar {
+	display: none;
+	/*when hidden map takes full width */
+	width: 0;
+	/* Hide the sidebar */
+}
+
+#herd-list {
+	list-style: decimal;
+	color: #555;
+	font-size: 1.2em;
+	padding: 0;
+	/* For tooltip positioning */
+}
+
+#herd-list li {
+	display: flex;
+	border: 2px solid #ccc;
+	border-radius: 15px;
+	position: relative;
+	padding: 0px;
+	margin: 10px;
+}
+
+.herd-icon {
+	width: 50px;
+	height: 50px;
+	margin: 10px;
+	display: inline-block;
+	/* icon is stored in a folder called icons */
+	background-repeat: no-repeat;
+	background-size: contain;
+	border-radius: 5px;
+	border: 1px solid #ccc;
+	/* Adjust as needed */
+}
+
+#herd-list li .overallDiv {
+	display: flex;
+	border: 2px solid #ccc;
+	border-radius: 15px;
+	
+}
+
+#herd-list li .text-content {
+	display: flex;
+	flex-direction: column;
+}
+
+#herd-list li .herd-name-color {
+	display: flex;
+	margin-top: 5px;
+	
+}
+#herd-list li .herd-name {
+	font-size: 1em;
+	margin-right: 10px;
+}
+
+#herd-list li .text-content .herd-id {
+	font-size: 0.8em;
+	color: #555;
+}
+
+#herd-list li .herd-color {
+	font-size: 0.9em;
+	color: #555;
+	margin-top: 5px;
+}
+
+#herd-list li .text-content .herd-cows {
+	font-size: 0.9em;
+	color: #555;
+}
+
+/* Styling the collar list */
+#fence-list {
+	list-style: decimal;
+	color: #555;
+	font-size: 1.2em;
+	padding: 0;
+	/* For tooltip positioning */
+}
+
+#fence-list li {
+	display: flex;
+	border: 2px solid #ccc;
+	border-radius: 15px;
+	position: relative;
+	padding: 0px;
+	margin: 10px;
+}
+
+.fence-icon {
+	width: 50px;
+	height: 50px;
+	margin: 10px;
+	display: inline-block;
+	/* icon is stored in a folder called icons */
+	background-repeat: no-repeat;
+	background-size: contain;
+	border-radius: 5px;
+	border: 1px solid #ccc;
+	/* Adjust as needed */
+}
+
+#fence-list li .overallDiv {
+	display: flex;
+	border: 2px solid #ccc;
+	border-radius: 15px;
+	
+}
+
+#fence-list li .text-content {
+	display: flex;
+	flex-direction: column;
+}
+
+#fence-list li .fence-name-color {
+	display: flex;
+	margin-top: 5px;
+}
+
+#fence-list li .fence-name {
+	font-size: 1em;
+	margin-right: 10px;
+}
+
+#fence-list li .text-content .fence-id {
+	font-size: 0.8em;
+	color: #555;
+}
+
+#fence-list li  .fence-color {
+	font-size: 0.9em;
+	color: #555;
+	margin-top: 5px;
+}
+
+#fence-list li .text-content .fence-cows {
+	font-size: 0.9em;
+	color: #555;
+}
+
+.cow-icon {
+	width: 50px;
+	height: 50px;
+	margin: 10px;
+	display: inline-block;
+	/* icon is stored in a folder called icons */
+	background-repeat: no-repeat;
+	background-size: contain;
+	border-radius: 100%;
+	border: 1px solid #ccc;
+	/* Adjust as needed */
+}
+
+/* Styling the collar list */
+#collar-list {
+	list-style: decimal;
+	color: #555;
+	font-size: 1.2em;
+	padding: 0;
+	/* For tooltip positioning */
+}
+
+#collar-list li {
+	display: flex;
+	justify-content: space-between;
+	/* Ensures spacing between text and icon */
+	align-items: center;
+	/* Center the icon vertically */
+	border: 2px solid #ccc;
+	border-radius: 15px;
+	cursor: pointer;
+	position: relative;
+	padding: 0px;
+	margin: 10px;
+}
+
+/* Container for text elements */
+#collar-list li .text-content {
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	flex-grow: 1;
+	/* Take up available space before the icon */
+	padding-right: 10px;
+	/* Add some space between text and icon */
+}
+
+/* Name styling */
+#collar-list li .text-content .cow-name {
+	font-weight: bold;
+	font-size: 1.1em;
+	/* Optional: Make the cow name bold */
+}
+
+/* ID styling */
+#collar-list li .text-content .cow-id {
+	font-size: 0.8em;
+	/* Adjust as needed */
+	color: #555;
+	/* Optional: Different color for ID */
+}
+
+#collar-list li .text-content .cow-alarm {
+	font-size: 0.9em;
+	/* Adjust as needed */
+	color: #555;
+	/* Optional: Different color for ID */
+
+}
+
+/* Hover effect for list items */
+#collar-list li:hover {
+	background-color: #f1f1f1;
+}
+
+.info {
+	cursor: pointer;
+	width: 40px;
+	height: 60px;
+	margin-left: 20px;
+	border-radius: 10px;
+	margin-right: 10px;
+	border: none;
+	background-color: transparent;
+	background-image: url('icons/right-arrow.png');
+	background-repeat: no-repeat;
+	background-size: contain;
+	background-position: center;
+	justify-content: center;
+	align-items: center;
+	opacity: 0.4;
+	/* Initial opacity set to 70% */
+	transition: opacity 0.3s ease;
+	/* Smooth transition for opacity change */
+}
+
+.info:hover {
+	opacity: 0.7;
+}
+
+.selected {
+	background-color: #f1f1f1;
+}
+
+.selected .icon {
+	background-color: #1FADE4;
+}
+
+.flex-container {
+	display: flex;
+	align-items: center;
+	justify-content: space-around;
+	margin-top: auto;
+}
+
+.flex-container-2 {
+	display: flex;
+	justify-content: space-between;
+	/* Space between text container and button */
+	margin-left: 10px;
+	margin-right: 10px;
+	margin-top: 0px;
+	margin-bottom: 0px;
+}
+
+.flex-container-4 {
+	display: flex;
+	justify-content: space-between;
+	margin: 10px;
+	/* Space between text container and button */
+}
+
+#medical-header {
+	display: flex;
+	justify-content: space-between;
+	margin-bottom: 10px;
+}
+
+#cow-name-id-med {
+	display: flex;
+	
+}
+
+.info-window {
+	display: flex;
+	flex-direction: column;
+	margin-right: 10px;
+}
+
+.info-window label {
+	font-size: 0.9em;
+	font-weight: bold;
+	color: #555;
+	margin-bottom: 4px;
+	font-family: 'Courier New', Courier, monospace;
+}
+
+.info-window input {
+	width: 150px;
+	padding: 4px;
+	font-size: 0.9em;
+	background-color: #f9f9f9;
+	border: 1px solid #ccc;
+	border-radius: 4px;
+	font-family: 'Courier New', Courier, monospace;
+}
+
+.info-window input:focus {
+	border-color: #1FADE4;
+	box-shadow: 0 0 5px rgba(74, 144, 226, 0.5);
+	outline: none;
+}
+
+#medical-note-div {
+	display: flex;
+	flex-direction: column;
+	margin-bottom: 10px;
+}
+
+#medical-note {
+	width: 100%;
+	height: 500px;
+	font-size: 0.9em;
+	font-family: 'Manrope', sans-serif;
+	line-height: 1.5;
+	border: 1px solid #ccc;
+	border-radius: 4px;
+	background-color: #f9f9f9;
+	padding: 10px;
+	box-sizing: border-box; /* Includes padding in width calculation */
+  	resize: none; /* Prevent manual resize */
+}
+
+/* Updated focus styling */
+#medical-note:focus {
+	border-color: #1FADE4;
+	/* Force border color on focus */
+	box-shadow: 0 0 5px rgba(74, 144, 226, 0.5);
+	outline: none;
+	/* Force outline removal */
+}
+
+#input-part {
+	display: flex;
+	justify-content: space-between;
+	/* Ensure space between items */
+	align-items: flex-start;
+	/* Align items at the top */
+	gap: 10px;
+	/* Space between sections */
+}
+
+/* Style for the procedure form */
+#procedure-form {
+	gap: 10px;
+	display: flex;
+	flex-direction: column;
+}
+
+#procedure-form label {
+	font-size: 0.9em;
+	color: #555;
+	font-weight: bold;
+	font-family: 'Courier New', Courier, monospace;
+	
+}
+
+#procedure-form input[type="date"],
+#procedure-form input[type="text"] {
+	padding: 3px;
+	font-size: 0.9em;
+	border: 1px solid #ccc;
+	border-radius: 4px;
+	background-color: #f9f9f9;
+	width: 200px;
+	margin-top: 0px;
+	font-family: 'Courier New', Courier, monospace;
+}
+
+#add-procedure {
+	background-color: #f1f1f1;
+	color: #555;
+	border: 1px solid #ccc;
+	padding: 5px 10px;
+	font-size: 1em;
+	border-radius: 4px;
+	cursor: pointer;
+	height: 40px;
+	margin-top: 10px;
+}
+
+#add-procedure:hover {
+	background-color: #1FADE4;
+	color: white;
+	box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+}
+
+#procedure-note-div {
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+	flex: 1;
+}
+
+#procedure-note-div label {
+	font-size: 0.9em;
+	color: #555;
+	font-family: 'Courier New', Courier, monospace;
+	font-weight: bold;
+}
+
+#procedure-note {
+	width: 100%;
+	height: 160px;
+	font-size: 0.9em;
+	font-family: 'Courier New', Courier, monospace;
+	line-height: 1.3;
+	border: 1px solid #ccc;
+	border-radius: 4px;
+	background-color: #f9f9f9;
+	resize: none;
+	padding: 10px;
+	box-sizing: border-box;
+}
+
+#procedure-doc-div {
+	display: flex;
+	flex-direction: column;
+	flex: 0 0 200px;
+	gap: 10px;
+
+}
+
+#procedure-doc-div label {
+	font-size: 0.9em;
+	color: #555;
+	font-family: 'Courier New', Courier, monospace;
+	font-weight: bold;
+}
+
+#pdf-upload {
+	width: 100%;
+}
+
+#upload-button {
+	background-color: #f1f1f1;
+	color: #555;
+	border: 1px solid #ccc;
+	padding: 5px 10px;
+	font-size: 1em;
+	border-radius: 4px;
+	cursor: pointer;
+	height: 40px;
+}
+
+#upload-button:hover {
+	background-color: #1FADE4;
+	color: white;
+	box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+}
+
+#btn-card-div {
+	display: flex;
+	justify-content: space-between;
+	margin-right: 10px;
+	margin-left: 10px;
+	margin-top: 0px;
+	margin-bottom: 0px;
+	/* Space between text container and button */
+}
+
+.btn-card {
+	background-color: #1FADE4;
+	color: white;
+	border: none;
+	padding: 5px 15px;
+	font-size: 1.2em;
+	border-radius: 4px;
+	cursor: pointer;
+	transition: background-color 0.3s ease;
+	height: 30px;
+	width: 70px;
+	margin-bottom: 0px;
+	/* Align button to the right */
+}
+
+.btn-card:hover {
+	background-color: #5dceff;
+	box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+}
+
+/* Styling for the separator line */
+.separator {
+	border-top: 1px solid #ccc;
+	margin-top: 5px;
+	margin-bottom: 5px;
+}
+
+.separator2 {
+	border-top: 1px solid #ccc;
+	margin-top: 0px;
+	margin-bottom: 0px;
+}
+
+.description {
+	margin: 10px;
+}
+
+.description-2 {
+	display:list-item;
+	justify-content: center;
+	align-items: center;
+	margin-left: 10px;
+}
+
+.icon-btn {
+	display: flex;
+	padding-top: 5px;
+	cursor: pointer;
+	background-color: #f1f1f1;
+	border: 2px solid #ccc;
+	color: #555;
+	width: 250px;;
+	font-size: 1.2em;
+	border-radius: 10px;
+}
+
+.icon-btn:hover {
+	color: #1FADE4;
+	border: 2px solid #1FADE4;
+}
+
+.icon-btn::before {
+	content: "";
+	display: flex;
+	width: 25px;
+	height: 25px;
+	background-size: contain;
+	background-repeat: no-repeat;
+	background-position: center;
+	margin-right: 10px;
+}
+
+/* Add specific background images for each button */
+#batt-btn::before {
+	background-image: url('icons/battery.png');
+}
+
+#temp-btn::before {
+	background-image: url('icons/temp.png');
+}
+
+#speed-btn::before {
+	background-image: url('icons/speed.png');
+}
+
+#accuracy-btn::before {
+	background-image: url('icons/accuracy.png');
+}
+
+#altitude-btn::before {
+	background-image: url('icons/altitude.png');
+}
+
+#activity-btn::before {
+	background-image: url('icons/activity.png');
+}
+
+#rumination-btn::before {
+	background-image: url('icons/head.png');
+}
+
+#press-btn::before {
+	background-image: url('icons/press.png');
+}
+
+#more-details-btn {
+	display: flex;
+	align-items: center;
+	padding: 5px 15px;
+	margin: 5px auto;
+	font-size: 1.2em;
+}
+
+.btn-more {
+	background-color: #f1f1f1;
+	color: #555;
+	border: none;
+	font-size: 1.2em;
+	border-radius: 4px;
+	cursor: pointer;
+	transition: background-color 0.3s ease;
+	height: 30px;
+	width: 100px;
+}
+
+.btn-more:hover {
+	background-color: #f1f1f1;
+	color: #1FADE4;
+	box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+}
+
+.more-details-icon {
+	width: 20px;
+	height: 20px;
+	margin-left: 15px;
+	/* The image source is now handled via the <img> tag */
+}
+
+/* Styling for the cow name text */
+#cow-name {
+	font-size: 1.3em;
+	font-weight: bold;
+	color: #555;
+	margin-top: 5px;
+	margin-bottom: 10px;
+}
+
+#cow-alarm {
+	font-size: 1em;
+	color: #555;
+	margin-top: 0px;
+}
+
+#led-color {
+	font-size: 1em;
+	color: #555;
+	margin-top: 0px;
+}
+
+/* Styling for the button */
+#cow-image {
+	width: 60px;
+	height: 60px;
+	border: none;
+	background-color: #1FADE4;
+	color: white;
+	border-radius: 50%;
+	margin-top: 5px;
+}
+
+#cow-battery {
+	font-size: 1em;
+	color: #555;
+	margin-top: 10px;
+}
+
+/* Styling checkboxes */
+#show-location {
+	margin: 10px;
+	display: flex;
+}
+
+.checkbox-container {
+	font-size: 1.1em;
+	color: #555;
+}
+
+#point-map-checkbox {
+	margin: 10px;
+	display:inline-block;
+	justify-content: space-around;
+}
+
+#heat-map-checkbox {
+	margin: 10px;
+	display:inline-block;
+	justify-content: space-around;
+}
+
+.limit-range-container {
+	margin: 10px;
+	display:flex;
+	justify-content: space-between;
+}
+
+.range-info-container {
+	margin: 10px;
+}
+
+.btn {
+	color: #555;
+	background-color: #f1f1f1;
+	border: none;
+	font-size: 1.2em;
+	border-radius: 4px;
+	cursor: pointer;
+	transition: background-color 0.3s ease;
+	height: 30px;
+	width: 70px;
+}
+
+.btn:hover {
+	background-color: #f1f1f1;
+	color: #1FADE4;
+	box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+}
+
+.dropdown {
+	position: relative;
+	display: inline-block;
+}
+
+/* Dropdown content (hidden by default) */
+.dropdown-content {
+	display: none !important;
+	position: absolute;
+	background-color: #f9f9f9;
+	min-width: 120px;
+	box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+	z-index: 1000;
+	top: 100%;
+	left: 0;
+	margin-top: 4px;
+}
+
+/* Dropdown button items */
+.dropdown-content .led-option,
+.dropdown-content .led-color-option {
+	color: black;
+	padding: 12px 16px;
+	text-decoration: none;
+	display: flex;
+	align-items: center;
+	background-color: white;
+	border: none;
+	width: 100%;
+	text-align: left;
+	cursor: pointer;
+}
+
+/* Add color dot next to each color option */
+.color-dot {
+	display: inline-block;
+	width: 15px;
+	height: 15px;
+	border-radius: 50%;
+	margin-right: 10px;
+}
+
+/* Hover effect for dropdown items */
+.dropdown-content .led-option:hover,
+.dropdown-content .led-color-option:hover {
+	background-color: #f1f1f1;
+}
+
+/* Show dropdown when clicking the LED button */
+.dropdown-content.show {
+	display: block !important;
+}
+
+.btn-heading {
+	color: #1FADE4;
+	border: none;
+	padding: 5px 15px;
+	font-size: 1.2em;
+	border-radius: 4px;
+	cursor: pointer;
+	transition: background-color 0.3s ease;
+	font-family: 'Manrope', sans-serif;
+	font-weight: bold;
+}
+
+.btn-heading:hover {
+	background-color: #1FADE4;
+	color: white;
+	box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+}
+
+#graph-modal {
+	position: absolute;
+	top: 0%;
+	left: 0%;
+	bottom: 0%;
+	width: 100%;
+	height: 100%;
+	z-index: 1000;
+	margin: 0px;
+	padding: 00px;
+	background-color: white;
+	overflow-y: auto;
+	/* Cursor will be set to move */
+}
+
+#graph-modal .modal-content {
+	font-family: 'Manrope', sans-serif;
+	background-color: #fff;
+	margin: 10px;
+	padding: 0px;
+	
+}
+
+.header-part-graph {
+	margin-left: 10px;
+	padding: 0px;
+	display: flex;
+	justify-content: space-between;
+}
+
+#tabs-graph {
+	display: flex;
+	margin-left: 10px;
+	padding: 0px;
+	overflow-x: auto;
+}
+
+#graph-container {
+	position: relative;
+	width: 100%;
+	height: 100%;
+	
+	/* maintain aspect ratio */
+
+}
+#chartCanvas {
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+}
+
+/* edit span elements in p inside modal */
+
+.icon-btn-text {
+	display: flex;
+	padding-top: 5px;
+	cursor: pointer;
+	background-color: #f1f1f1;
+	border: 2px solid #ccc;
+	color: #555;
+	width: 250px;	/* Remove the bottom border to make it look like a tab */
+	transition: background-color 0.3s, color 0.3s;
+	/* Smooth transition */
+	font-size: 1.2em;
+	margin: 0px;
+	border-radius: 10px;
+}
+
+.icon-btn-text:hover {
+	color: #1FADE4;
+	border: 2px solid #1FADE4;
+}
+
+.icon-btn-text::before {
+	content: "";
+	display: flex;
+	width: 25px;
+	height: 25px;
+	background-size: contain;
+	background-repeat: no-repeat;
+	background-position: center;
+	margin-right: 10px;
+}
+
+/* Add specific background images for each button */
+
+
+
+
+#batt-btn-modal::before {
+	background-image: url('icons/battery.png');
+}
+
+#temp-btn-modal::before {
+	background-image: url('icons/temp.png');
+}
+
+#speed-btn-modal::before {
+	background-image: url('icons/speed.png');
+}
+
+#accuracy-btn-modal::before{
+	background-image: url('icons/accuracy.png');
+}
+
+#altitude-btn-modal::before {
+	background-image: url('icons/altitude.png');
+}
+
+#activity-btn-modal::before {
+	background-image: url('icons/activity.png');
+}
+
+#rumination-btn-modal::before {
+	background-image: url('icons/head.png');
+}
+
+#press-btn-modal::before {
+	background-image: url('icons/press.png');
+}
+
+#cow-card-modal {
+	position: absolute;
+	top: 0%;
+	left: 0%;
+	width: 100%;
+	height: 100%;
+	z-index: 1000;
+	background-color: white;
+	border: 1px solid #ccc;
+	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+	overflow: auto;
+}
+
+#cow-card-modal .modal-content {
+	font-family: 'Manrope', sans-serif;
+	font-size: 1.2em;
+	margin: 10px;
+}
+#cow-card-menu-btns {
+	display: flex;
+	justify-content: right;
+}
+
+.close {
+	border: 1px solid #ccc;
+	border-radius: 4px;
+	background-color: #f1f1f1;
+	width: 30px;
+	height: 30px;
+	cursor: pointer;
+	background-image: url('icons/x.png');
+	background-repeat: no-repeat;
+	background-size: 50%;
+	background-position: center;
+	transition: background-color 0.3s ease;
+	margin: 10px;
+}
+
+.close:hover {
+	background-color: #c43a3a;
+	box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+	background-image: url('icons/x-white.png');
+
+}
+
+.btn-save {
+	background-color: #f1f1f1;
+	color: #555;
+	border: 1px solid #ccc;
+	font-size: 1.2em;
+	border-radius: 4px;
+	cursor: pointer;
+	height: 31px;
+	margin-right: 10px;
+	width: 70px;
+}
+
+.btn-save:hover {
+	background-color: #1FADE4;
+	color: white;
+	box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+}
+
+#tabs {
+	display: flex;
+	justify-content: space-around;
+	border-bottom: 2px solid #ccc;
+	/* Add a border to define the tab section */
+	text-align: center;
+}
+
+#tabs .selected {
+	color: #1FADE4;
+	border: 2px solid #1FADE4;
+}
+
+#cow-info-card-tab, #medical-data-tab,
+#doc-upload-tab {
+	padding: 10px 20px;
+	cursor: pointer;
+	background-color: #f1f1f1;
+	border: 1px solid #ccc;
+	border-bottom: none;
+	color: #555;
+	/* Remove the bottom border to make it look like a tab */
+	transition: background-color 0.3s, color 0.3s;
+	/* Smooth transition */
+	font-size: 1.2em;
+	flex: 1;
+	/* Spread the tabs evenly */
+	text-align: center;
+	border-radius: 4px;
+}
+
+#cow-info-card-tab:hover, #medical-data-tab:hover,
+#doc-upload-tab:hover {
+	color: #1FADE4;
+	border: 2px solid #1FADE4;
+}
+
+#cow-info-card-tab.active, #medical-data-tab.active,
+#doc-upload-tab.active {
+	color: #1FADE4;
+	border: 2px solid #1FADE4;
+}
+
+.tab-content {
+	display: none;
+	overflow:hidden;
+}
+
+.tab-content.active {
+	display: block;
+	overflow-y: auto;
+	overflow-x: auto;
+	margin: 10px;
+}
+
+.header-part {
+	display: flex;
+	justify-content: space-between;
+}
+
+#cow-card-modal h2 {
+	font-size: 1.2em;
+	color: #555;
+	margin: 0px;
+	/* Add space below the header */
+}
+
+.form-column {
+	flex-direction: column;
+	margin: 10px;
+	/* Add gap between form groups for uniform spacing */
+}
+
+.form-group {
+	display: flex;
+	align-items: center;
+	/* Increase spacing for more clarity */
+}
+
+.form-group label {
+	width: 230px;
+    margin-right: 10px;
+    text-align: left;
+    color: #555; /* Darken the label text for better readability */
+	font-size: 0.9em;
+}
+
+.form-group input {
+	width: 230px;
+	padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 6px; /* Slightly more rounded corners */
+    transition: border-color 0.3s, box-shadow 0.3s; /* Add smooth transition */
+	font-size: 0.9em;
+
+}
+
+.form-group input[type="date"] {
+	width: 230px;
+	padding: 5px;
+	border: 1px solid #ccc;
+	border-radius: 6px; /* Slightly more rounded corners */
+	transition: border-color 0.3s, box-shadow 0.3s; /* Add smooth transition */
+	font-size: 0.9em;
+}
+
+.form-group input:focus {
+	border-color: #4CAF50;
+	box-shadow: 0 0 5px rgba(76, 175, 80, 0.2);
+	/* Subtle shadow on focus */
+}
+
+.form-group input:hover {
+	border-color: #1FADE4;
+	box-shadow: 0 0 5px rgba(76, 175, 80, 0.2);
+	/* Subtle shadow on focus */
+}
+
+#cow-info {
+	display: flex;
+	justify-content: space-between;
+	overflow-y: auto;
+	overflow-x: auto;
+}
+
+.custom-marker-icon .icon-container {
+	position: relative;
+	width: 60px;
+	height: 60px;
+}
+
+
+
+#doc-upload-container {
+	font-family: Arial, sans-serif;
+	font-size: 12px;
+	/* Small text like Windows Explorer */
+	color: #333;
+	width: 100%;
+	border: 1px solid #ccc;
+	border-radius: 4px;
+	overflow: hidden;
+	background-color: #f9f9f9;
+}
+
+.pdf-items-header {
+	display: flex;
+	justify-content: space-between;
+	padding: 8px 16px;
+	background-color: #e6e6e6;
+	border-bottom: 1px solid #ccc;
+	font-weight: bold;
+}
+
+.pdf-items-header label {
+	flex: 1;
+	text-align: left;
+}
+
+.pdf-items {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	padding: 8px 16px;
+	border-bottom: 1px solid #e6e6e6;
+}
+
+.pdf-items:last-child {
+	border-bottom: none;
+}
+
+.pdf-icon {
+	width: 20px;
+	height: 20px;
+	margin-right: 10px;
+	display: inline-block;
+	src: url('icons/pdf-icon.png');
+}
+
+#label {
+	flex: 1;
+	text-align: left;
+	overflow: hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+}
+
+/* Hover effect for items */
+
+/* Adjust spacing for labels */
+#label:first-of-type {
+	margin-left: 0px;
+	/* Align text with header */
+}
+
+#label:last-of-type {
+	margin-right: 0px;
+	/* Align text with header */
+}
+
+.pdf-delete-btn {
+	border: none;
+	border-radius: 4px;
+	cursor: pointer;
+	width: 20px;
+	height: 20px;
+	background-color: #ccc;
+	background-image: url('icons/bin-white.png');
+	background-repeat: no-repeat;
+	background-size: 60%;
+	background-position: center;
+
+}
+
+#pdf-list {
+	margin-top: 10px;
+	list-style: decimal;
+	color: #555;
+	font-size: 1em;
+	padding: 0;
+
+}
+
+#pdf-list p {
+	margin: 0px;
+	
+}
+
+.custom-marker-icon .gps-icon {
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	bottom: 0;
+	right: 0;
+	left: 0;
+	top: 0;
+}
+
+.custom-marker-icon .cow-icon {
+	position: absolute;
+	width: 30px;
+	height: 30px;
+	border-radius: 50%;
+	bottom: 0;
+	right: 0;
+	left: 0;
+	top: 0;
+}
+
+/* ==================== LED MENU STYLES ==================== */
+
+/* The LED menu styles are already defined above in the main dropdown section */
+
+/* ==================== FENCE AND HERD PANELS ==================== */
+
+.fence-item,
+.herd-item {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	padding: 12px;
+	margin-bottom: 8px;
+	background-color: var(--item-bg);
+	border: 1px solid var(--border-color);
+	border-radius: 8px;
+	transition: background-color 0.2s ease;
+}
+
+.fence-item:hover,
+.herd-item:hover {
+	background-color: var(--item-hover-bg);
+}
+
+.fence-info,
+.herd-info {
+	flex: 1;
+}
+
+.fence-info h4,
+.herd-info h4 {
+	margin: 0 0 4px 0;
+	color: var(--text-color);
+	font-size: 14px;
+	font-weight: 600;
+}
+
+.fence-info p,
+.herd-info p {
+	margin: 0;
+	color: var(--text-secondary);
+	font-size: 12px;
+}
+
+.fence-color,
+.herd-color {
+	width: 16px;
+	height: 16px;
+	border-radius: 50%;
+	border: 1px solid rgba(255, 255, 255, 0.3);
+	margin-top: 4px;
+}
+
+.fence-action-btn,
+.herd-action-btn {
+	padding: 6px 12px;
+	background-color: var(--primary-color);
+	color: white;
+	border: none;
+	border-radius: 6px;
+	font-size: 12px;
+	cursor: pointer;
+	transition: background-color 0.2s ease;
+}
+
+.fence-action-btn:hover,
+.herd-action-btn:hover {
+	background-color: var(--primary-hover);
+}
+
+/* ==================== ALARM STATUS STYLES ==================== */
+
+.alarm-ok {
+	color: #4ade80;
+	background-color: rgba(74, 222, 128, 0.1);
+	padding: 2px 6px;
+	border-radius: 4px;
+	font-size: 11px;
+	font-weight: 600;
+}
+
+.alarm-warning {
+	color: #fbbf24;
+	background-color: rgba(251, 191, 36, 0.1);
+	padding: 2px 6px;
+	border-radius: 4px;
+	font-size: 11px;
+	font-weight: 600;
+}
+
+.alarm-danger {
+	color: #ef4444;
+	background-color: rgba(239, 68, 68, 0.1);
+	padding: 2px 6px;
+	border-radius: 4px;
+	font-size: 11px;
+	font-weight: 600;
+}
+
+/* ==================== COW POPUP STYLES ==================== */
+
+.cow-popup {
+	padding: 12px;
+	min-width: 200px;
+}
+
+.cow-popup h4 {
+	margin: 0 0 8px 0;
+	color: var(--text-color);
+	font-size: 16px;
+}
+
+.cow-popup p {
+	margin: 4px 0;
+	color: var(--text-secondary);
+	font-size: 14px;
+}
+
+.cow-popup strong {
+	color: var(--text-color);
+}
+
+/* ==================== ACTIVE NAVIGATION STYLES ==================== */
+
+.nav-button.active {
+	background-color: var(--primary-color);
+	color: white;
+	transform: translateY(-1px);
+	box-shadow: 0 4px 12px rgba(var(--primary-rgb), 0.4);
+}
+
+.nav-button.active:hover {
+	background-color: var(--primary-hover);
+}
+
+/* ==================== RESPONSIVE IMPROVEMENTS ==================== */
+
+@media (max-width: 768px) {
+	.fence-item,
+	.herd-item {
+		flex-direction: column;
+		align-items: flex-start;
+		gap: 8px;
+	}
+
+	.fence-action-btn,
+	.herd-action-btn {
+		align-self: stretch;
+		text-align: center;
+	}
+
+	.dropdown-content {
+		right: 0;
+		left: auto;
+	}
+}
+
+/* ==================== UTILITY CLASSES ==================== */
+
+.hidden {
+	display: none !important;
+}
+
+.hidden-btn {
+	opacity: 0;
+	pointer-events: none;
+	transform: scale(0.9);
+}
+
+.loading {
+	opacity: 0.6;
+	cursor: wait;
+}
+
+.loading::after {
+	content: "";
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	width: 20px;
+	height: 20px;
+	margin: -10px 0 0 -10px;
+	border: 2px solid transparent;
+	border-top: 2px solid var(--primary-color);
+	border-radius: 50%;
+	animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+	0% { transform: rotate(0deg); }
+	100% { transform: rotate(360deg); }
+}
+
