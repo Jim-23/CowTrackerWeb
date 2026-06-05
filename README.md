@@ -74,11 +74,11 @@ You can view the web application at [http://18.170.252.93:3001/](http://18.170.2
 
 The application comes with pre-loaded mock data for 10 cows with realistic GPS tracking, temperature, and sensor data. This allows you to explore all features without connecting to external APIs:
 
-- ✅ Real-time cow tracking on map
-- ✅ Cow details and sensor data
-- ✅ Fence and herd management
-- ✅ LED controls (simulated)
-- ✅ WebSocket updates every 5 seconds
+- Real-time cow tracking on map
+- Cow details and sensor data
+- Fence and herd management
+- LED controls (simulated)
+- WebSocket updates every 5 seconds
 
 Simply start the server and the application will work immediately with sample data!
 
@@ -213,7 +213,7 @@ All endpoints automatically use mock data when `USE_MOCK_DATA = true` in `server
 
 Enable debug logging by setting `CONFIG.development.debugMode = true` in the script.
 
-## 📱 Browser Compatibility
+## Browser Compatibility
 
 - Chrome 80+
 - Firefox 75+
