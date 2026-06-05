@@ -175,29 +175,44 @@ document.addEventListener("DOMContentLoaded", function () {
 	}).addTo(map);
 
 	function initializeWebSocket() {
-		ws = new WebSocket('ws://localhost:8764');  // Connect to WebSocket server
+		async function fetchAndUpdateCows() {
+			try {
+				const [cowRes, gwRes] = await Promise.all([
+					fetch('data/cow_data.json'),
+					fetch('data/gateway_data.json')
+				]);
+				const cowData = await cowRes.json();
+				const gwData = await gwRes.json();
 
-		ws.onopen = function () {
-			console.log('WebSocket connection established');
-		};
-
-		ws.onmessage = function (event) {
-			const data = JSON.parse(event.data);
-			if (!data.data || data.data.length < 1) {
-				console.error('No data received from server:', data);
-				return;
-			} else {
-				loadCollarDetails(data);
+				const mockData = {
+					data: cowData.map(cow => {
+						const lastRecord = cow.records[cow.records.length - 1];
+						const collarInfo = gwData.collars.find(c => c.animal && c.animal.id === cow.id);
+						return {
+							id: cow.id,
+							name: collarInfo?.animal?.name || `Cow ${cow.id}`,
+							gps_lat: lastRecord.latitude,
+							gps_lon: lastRecord.longitude,
+							gps_speed: 0,
+							gps_accuracy: 5,
+							gps_altitude: 300,
+							time: lastRecord.datetime,
+							alarm: collarInfo?.fences_ids?.includes(2) ? 'out of fence' : 'ok',
+							led_color: collarInfo?.led_color || '#00ff00',
+							breed_type: collarInfo?.animal?.breed_type || 'Unknown',
+							birth_date: collarInfo?.animal?.birth_date || '2021-01-01',
+							battery: 85,
+							tpulser: 0
+						};
+					})
+				};
+				loadCollarDetails(mockData);
+			} catch (error) {
+				console.error('Error fetching cow data:', error);
 			}
-		};
-
-		ws.onclose = function () {
-			console.log('WebSocket connection closed');
-		};
-
-		ws.onerror = function (error) {
-			console.error('WebSocket error:', error);
-		};
+		}
+		fetchAndUpdateCows();
+		setInterval(fetchAndUpdateCows, 5000);
 	}
 
 	function drawFencePolygon(coordinates) {
@@ -1598,18 +1613,10 @@ document.addEventListener("DOMContentLoaded", function () {
 
 	// Function to load gateway and collar information from the API
 	function loadGW() {
-		const collarsUrl = 'http://localhost:3001/api/gateways/1';
+		const collarsUrl = 'data/gateway_data.json';
 		console.log('Loading gateway and collar data:', collarsUrl);
-		
-		const options = {
-			method: 'GET',
-			headers: {
-				'Authorization': 'Bearer secret963_aaaa-1234',
-				'Content-Type': 'application/json',
-			}
-		};
 
-		fetch(collarsUrl, options)
+		fetch(collarsUrl)
 			.then(response => {
 				if (!response.ok) {
 					throw new Error(`HTTP error! status: ${response.status}`);
@@ -2180,26 +2187,11 @@ document.addEventListener("DOMContentLoaded", function () {
 				event.preventDefault();
 				const color = option.getAttribute('data-color');
 				if (color && currentCow) {
-					// Send LED color change command
-					fetch('/api/collars/led', {
-						method: 'POST',
-						headers: {
-							'Content-Type': 'application/json',
-						},
-						body: JSON.stringify({
-							collar_id: currentCow.id,
-							color: color
-						})
-					}).then(response => response.json())
-					.then(data => {
-						console.log('LED color changed:', data);
-						// Update the LED color display
-						if (document.getElementById('led-color')) {
-							document.getElementById('led-color').textContent = `LED: ${color}`;
-						}
-					}).catch(error => {
-						console.error('Error changing LED color:', error);
-					});
+					// Static mode: update LED display locally only
+					console.log(`LED color change requested for collar ${currentCow.id}: ${color}`);
+					if (document.getElementById('led-color')) {
+						document.getElementById('led-color').textContent = `LED: ${color}`;
+					}
 				}
 				// Hide the menu after selection
 				if (ledMenu) {
@@ -2270,20 +2262,9 @@ document.addEventListener("DOMContentLoaded", function () {
 	if (soundButton) {
 		soundButton.addEventListener('click', function () {
 			if (currentCow) {
-				fetch('/api/collars/play_sound', {
-					method: 'POST',
-					headers: {
-						'Content-Type': 'application/json',
-					},
-					body: JSON.stringify({
-						collar_id: currentCow.id
-					})
-				}).then(response => response.json())
-				.then(data => {
-					console.log('Sound command sent:', data);
-				}).catch(error => {
-					console.error('Error sending sound command:', error);
-				});
+				// Static mode: command not available without backend
+				console.log(`Play sound requested for collar ${currentCow.id}`);
+				alert('Sound command is not available in static/demo mode.');
 			}
 		});
 	}
@@ -2291,20 +2272,9 @@ document.addEventListener("DOMContentLoaded", function () {
 	if (shockButton) {
 		shockButton.addEventListener('click', function () {
 			if (currentCow && confirm('Are you sure you want to send a shock command?')) {
-				fetch('/api/collars/give_shock', {
-					method: 'POST',
-					headers: {
-						'Content-Type': 'application/json',
-					},
-					body: JSON.stringify({
-						collar_id: currentCow.id
-					})
-				}).then(response => response.json())
-				.then(data => {
-					console.log('Shock command sent:', data);
-				}).catch(error => {
-					console.error('Error sending shock command:', error);
-				});
+				// Static mode: command not available without backend
+				console.log(`Shock command requested for collar ${currentCow.id}`);
+				alert('Shock command is not available in static/demo mode.');
 			}
 		});
 	}
@@ -2329,5 +2299,44 @@ document.addEventListener("DOMContentLoaded", function () {
 	initializeWebSocket();
 	
 	console.log('Application initialized successfully');
+
+	// Static override for GitHub Pages - replaces backend GPS history fetching
+	function fetchLonLatData(cowID, range, limit, page) {
+		console.log('Getting location data (static) for cow:', cowID, 'with range:', range);
+		fetch('data/cow_data.json')
+			.then(response => {
+				if (!response.ok) throw new Error('Failed to load cow data');
+				return response.json();
+			})
+			.then(allCowData => {
+				const cowData = allCowData.find(cow => cow.id === parseInt(cowID));
+				if (!cowData || !cowData.records) {
+					alert('No data found for the selected cow');
+					return;
+				}
+				const dateFrom = new Date(range.start);
+				const dateTo = new Date(range.end);
+				let filtered = cowData.records.filter(record => {
+					const d = new Date(record.datetime);
+					return d >= dateFrom && d <= dateTo;
+				});
+				const pageNum = parseInt(page) || 0;
+				const limitNum = parseInt(limit) || 100;
+				filtered = filtered.slice(pageNum * limitNum, (pageNum + 1) * limitNum);
+				if (filtered.length === 0) {
+					alert('No data found for the selected date range');
+					return;
+				}
+				const data = filtered.map(record => ({
+					gps_lon: record.longitude,
+					gps_lat: record.latitude,
+					time: record.datetime
+				}));
+				processGPSData(data, cowID, range);
+			})
+			.catch(error => {
+				console.error('Error fetching location data:', error);
+			});
+	}
 
 });
