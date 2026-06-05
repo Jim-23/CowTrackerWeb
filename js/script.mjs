@@ -360,6 +360,7 @@ document.addEventListener("DOMContentLoaded", function () {
 			indexes[cow.id] = allCows.findIndex(msg => msg.id === cow.id);
 
 			infoButton.addEventListener('click', function (e) {
+				e.stopPropagation(); // prevent listItem click from also firing
 				const cowID = e.target.closest('li').dataset.id;
 				console.log('Info button clicked:', cowID);
 				const cow = allCows.find(cow => cow.id === parseInt(cowID, 10));
@@ -390,6 +391,28 @@ document.addEventListener("DOMContentLoaded", function () {
 					currentCowID = cowID; // Set the currentCowID to track the newly shown cow
 					console.log('Details panel shown for cow ID:', cowID);
 				}
+			});
+
+			// Clicking the row itself (not the arrow) focuses the cow on the map
+			listItem.addEventListener('click', function () {
+				const liveCow = allCows.find(c => c.id === parseInt(listItem.dataset.id, 10));
+				if (!liveCow || !liveCow.gps) return;
+
+				// Fly to the cow on the map
+				map.flyTo([liveCow.gps.lat, liveCow.gps.lon], 18, { duration: 1, easeLinearity: 0.5 });
+
+				// Highlight this list item
+				const prev = document.querySelector('#collar-list .selected');
+				if (prev) prev.classList.remove('selected');
+				listItem.classList.add('selected');
+
+				// Highlight marker, dim others
+				for (const key in markers) {
+					if (markers[key]?.getElement) markers[key].getElement().style.opacity = 0.5;
+				}
+				if (markers[liveCow.id]?.getElement) markers[liveCow.id].getElement().style.opacity = 1;
+
+				currentCow = liveCow;
 			});
 		}
 		// also update the cow details panel
@@ -529,7 +552,19 @@ document.addEventListener("DOMContentLoaded", function () {
 				console.error(`List item for cow ID ${cow.id} not found.`);
 				return;
 			}
-			selectedCow(listItem, cow);
+			// Always use the latest cow data from allCows (closure cow may be stale)
+			const liveCow = allCows.find(c => c.id === cow.id) || cow;
+			selectedCow(listItem, liveCow);
+
+			// Open / refresh the details panel
+			const toggleDetailsArrow = document.getElementById('toggle-details-btn');
+			const toggleDetailsArrowPanel = document.getElementById('toggle-details-btn-panel');
+			const detailsPanel = document.getElementById('cow-details');
+			if (toggleDetailsArrow) toggleDetailsArrow.classList.add('hidden-btn');
+			if (toggleDetailsArrowPanel) toggleDetailsArrowPanel.classList.remove('hidden-btn');
+			if (detailsPanel) detailsPanel.classList.remove('hidden');
+			showCowDetails(liveCow);
+			currentCowID = String(liveCow.id);
 		});
 
 		return marker; // Return the marker object
@@ -782,7 +817,7 @@ document.addEventListener("DOMContentLoaded", function () {
 	};
 
 	function closeGraphCard() {
-		graphCardModal.classList.add('hidden'); // Hide the modal
+		document.getElementById('graph-modal').classList.add('hidden'); // Hide the modal
 	}
 
 	const closeGraphElement = document.getElementById('close-graph-modal');
@@ -920,7 +955,7 @@ document.addEventListener("DOMContentLoaded", function () {
 		document.getElementById('herdBookNum').value = cowInfoData.herd_book_num;
 		document.getElementById('groupName').value = cowInfoData.group_name;
 		document.getElementById('tag').value = cowInfoData.tag;
-		birthDate.value = cowInfoData.birth_date;
+		document.getElementById('birthDate').value = cowInfoData.birth_date;
 		document.getElementById('sex').value = cowInfoData.sex;
 		document.getElementById('colour').value = cowInfoData.colour;
 		document.getElementById('origin').value = cowInfoData.origin;
@@ -1105,6 +1140,13 @@ document.addEventListener("DOMContentLoaded", function () {
 		localStorage.setItem('cowCardData', jsonData);
 	}
 
+
+	function addHeatMapToMap(lonLatData) {
+		if (!lonLatData || lonLatData.length === 0) return;
+		const heatPoints = lonLatData.map(p => [p.lat, p.lon, 1]);
+		if (heatLayer) heatLayer.remove();
+		heatLayer = L.heatLayer(heatPoints, { radius: 20, blur: 15 }).addTo(map);
+	}
 
 	function clearCollarList() {
 		const collarList = document.getElementById('collar-list');
@@ -1355,7 +1397,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 		// Create a polyline using the coordinates and add it to the map
 		if (polylineCoordinates.length > 1) {
-			polyline = L.polyline(polygonCoordinates, { color: 'blue', weight: 3 }).addTo(map);
+			polyline = L.polyline(polylineCoordinates, { color: 'blue', weight: 3 }).addTo(map);
 			// Fit the map to the polyline bounds
 			map.fitBounds(polyline.getBounds());
 		}
@@ -1541,7 +1583,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
 	if (showButton) {
 		showButton.addEventListener('click', function () {
-			showLocationsForCow();
+			if (currentCow) {
+				getLocationData(currentCow);
+			}
 		});
 	}
 
@@ -1551,15 +1595,21 @@ document.addEventListener("DOMContentLoaded", function () {
 		});
 	}
 
+	const sortSelect = document.getElementById('sort-select');
+	if (sortSelect) {
+		sortSelect.addEventListener('change', function () {
+			const criteria = this.value;
+			if (criteria !== 'empty') {
+				sortCollars(criteria);
+			}
+		});
+	}
+
 	if (moreDetailsButton) {
 		moreDetailsButton.addEventListener('click', function () {
 			moreDetails.classList.toggle('hidden');
 		});
 	}
-
-	// Initialize the application
-	initializeWebSocket();
-	loadGW();
 
 	// Helper function to hide all panels
 	function hideAllPanels() {
@@ -1983,7 +2033,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 		// Create a polyline using the coordinates and add it to the map
 		if (polylineCoordinates.length > 1) {
-			polyline = L.polyline(polygonCoordinates, { color: 'blue', weight: 3 }).addTo(map);
+			polyline = L.polyline(polylineCoordinates, { color: 'blue', weight: 3 }).addTo(map);
 			// Fit the map to the polyline bounds
 			map.fitBounds(polyline.getBounds());
 		}
@@ -2099,11 +2149,8 @@ document.addEventListener("DOMContentLoaded", function () {
 			}
 
 			if (currentCow) {
-				const payload = {
-					"collar_ids": [currentCow.id],
-					color: selectedColor
-				};
-				updateLedColor(payload);
+				currentCow.ledColor = selectedColor;
+				updateMarkerForCow(currentCow);
 			}
 
 			ledMenu.classList.remove('show');
@@ -2116,11 +2163,6 @@ document.addEventListener("DOMContentLoaded", function () {
 			ledMenu.classList.remove('show');
 		}
 	});
-
-	// Initialize the application
-	initializeWebSocket();
-	loadGW();
-	loadCardData();
 
 	// Helper function to hide all panels
 	function hideAllPanels() {
