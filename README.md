@@ -3,7 +3,7 @@
 A modern, cattle tracking system that provides real-time monitoring of livestock.
 
 ## Live Demo
-You can view the web application at [http://18.170.252.93:3001/](http://18.170.252.93:3001/). Please note that this demo displays the UI only, as data fetching is currently disabled due to workplace policies and public sharing.
+You can view the web application at [http://18.170.252.93:3001/](http://18.170.252.93:3001/](https://jim-23.github.io/CowTrackerWeb/). Please note that this demo displays the UI only, as data fetching is currently disabled due to workplace policies and public sharing.
 
 ## Features
 
